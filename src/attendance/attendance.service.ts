@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { UpdateAttendanceDto } from './dto/update-attendance.dto';
-import { Attendance } from './entities/attendance.entity';
-import { Model } from 'mongoose';
+import { Injectable } from '@nestjs/common'; 
+import { UpdateAttendanceDto } from './dto/update-attendance.dto'; 
+import { Attendance } from './entities/attendance.entity'; 
+import { Model } from 'mongoose'; 
 import { InjectModel } from '@nestjs/mongoose';
 
 
@@ -16,7 +16,7 @@ export class AttendanceService {
   }
 
   findAll() {
-    return `This action returns all attendance`;
+    return `This action returns all attendance  mannnnnnn`;
   }
 
   findOne(id: number) {

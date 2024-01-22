@@ -1,4 +1,9 @@
 version: '3'
+
+networks:
+  nginx_default:
+    external: true
+
 services:
   app:
     build:
