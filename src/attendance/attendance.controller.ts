@@ -5,9 +5,10 @@ import {
   Get,
   Headers,
   HttpException,
-  Param,
+  Param, 
   Post,
 } from '@nestjs/common';
+import * as jwt from 'jsonwebtoken';
 import { AttendanceService } from './attendance.service';
 import { AttendanceDto } from './dto/create-attendance.dto';
 import * as geolib from 'geolib';
@@ -18,9 +19,12 @@ export class AttendanceController {
   @Post('record-attendance')
   async recordAttendance(
     @Body() attendanceDto: AttendanceDto,
-    @Headers('authorization') authToken: string,
+    @Headers('authorization') token: any
   ): Promise<string> {
     try {
+      let extractedToken = token.split('Bearer ')[1]; 
+      const decoded = jwt.decode(extractedToken);
+      console.log('Decoded workingman please:', decoded);
       const currentlocation = {
         latitude: 27.699790662297044,
         longitude: 85.32809136433072,
@@ -46,6 +50,9 @@ export class AttendanceController {
       return error
     }
   }
+
+
+  
 
   @Get()
   findAll() {

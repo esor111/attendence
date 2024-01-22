@@ -2,10 +2,10 @@
 FROM node:latest
 
 # Set the working directory to /app
-WORKDIR /
+WORKDIR /app
 
-# Copy package.json and yarn.lock to the working directory
-COPY package*.json  ./
+# Copy package.json to the working directory
+COPY package*.json ./
 
 # Install dependencies using Yarn
 RUN yarn install
@@ -20,4 +20,4 @@ RUN yarn build
 EXPOSE 3003
 
 # Command to run your application
-CMD ["yarn", "start:prod"]
+CMD ["yarn", "start:dev"]
