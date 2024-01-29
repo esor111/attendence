@@ -9,12 +9,17 @@ export class Location {
   @Prop()
   longitude: number;
 }
+//business_id=> rakham
+//rename location to hash , checkin_hash, business_hash
+//attendance_type, wfh , ckeckin
 
+
+//status
 @Schema()
 export class Attendance extends Document {
 
   @Prop()
-  userId: number;
+  userId: string;
 
   @Prop()
   checkInTime: Date;

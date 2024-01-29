@@ -36,7 +36,7 @@ export class AttendanceController {
       if (distance > 100) {
       throw new HttpException("you cannot attend", 400)
       }
-      const newAttendance = {
+      const newAttendance = { 
         userId: 1,
         checkInTime: new Date(),
         location: {
@@ -54,9 +54,14 @@ export class AttendanceController {
 
   
 
-  @Get()
-  findAll() {
-    return this.attendanceService.findAll();
+  @Get("geohash")
+ async createattendance(
+  @Headers('authorization') token: any
+ ) {
+  let extractedToken = token.split('Bearer ')[1]; 
+  const decoded = jwt.decode(extractedToken);
+  console.log(decoded?.id)
+   const attendance=await this.attendanceService.createAttendancebygeohash(decoded?.id)
   }
 
   @Get(':id')
