@@ -1,0 +1,188 @@
+openapi: 3.0.0
+info:
+  title: Attendance System API
+  version: 1.0.0
+  description: API for managing user attendance records.
+
+servers:
+  - url: http://localhost:3000
+    description: Development Server
+
+paths:
+  /attendance:
+    post:
+      summary: Create a new attendance record
+      requestBody:
+        description: Attendance data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+        '400':
+          description: Bad Request
+
+    get:
+      summary: Get all attendance records
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Attendance'
+
+  /attendance/{id}:
+    get:
+      summary: Get a specific attendance record by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+        '404':
+          description: Not Found
+
+    put:
+      summary: Update a specific attendance record by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Attendance data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+        '404':
+          description: Not Found
+        '400':
+          description: Bad Request
+
+    delete:
+      summary: Delete a specific attendance record by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+        '404':
+          description: Not Found
+
+  /attendance/today/{userId}:
+    get:
+      summary: Get today's attendance status for a specific user
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Attendance'
+        '404':
+          description: Not Found
+
+  /attendance/checkin:
+    post:
+      summary: Check in a user for the current day
+      requestBody:
+        description: Attendance data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+        '400':
+          description: Bad Request
+
+  /attendance/checkout/{userId}:
+    post:
+      summary: Check out a user for the current day
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+        '404':
+          description: Not Found
+
+components:
+  schemas:
+    Attendance:
+      type: object
+      properties:
+        userId:
+          type: string
+        checkOutTime:
+          type: string
+          format: date-time
+        checkInTime:
+          type: string
+          format: date-time
+        checkInType:
+          type: string
+        locationHash:
+          type: string
+        entityId:
+          type: string
+        checkInHash:
+          type: string

@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  nestapp:
+    container_name: nestapp
+    build: .
+    ports:
+      - 4000:4000
+    env_file:
+      - .env  # Specify the path to your .env file
+
+

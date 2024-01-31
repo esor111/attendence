@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+ 
+  nestapp:
+    build:
+      context: ./api_server
+      dockerfile: Dockerfile
+    # image: chasseuragace/kaha:api-server 
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+    ports:
+      - "4000:4000"
+
+    env_file:
+      - ./api_server/.env
+    depends_on:
+      # - postgres
+      - mongo
+
+
+  mongo:
+    image: mongo
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+    ports:
+      - "27017:27017"
+
+    volumes:
+      - ./mongodb/mongo-data:/data/db
+
+# // clean this up

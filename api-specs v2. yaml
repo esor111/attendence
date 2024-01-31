@@ -1,0 +1,210 @@
+openapi: 3.0.0
+info:
+  title: NestJS Attendance API
+  description: API documentation for managing attendance records
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000  # Update the URL based on your server configuration
+paths:
+  /attendance:
+    post:
+      summary: Create a new attendance record
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAttendanceDto'
+      responses:
+        '201':
+          description: Successful creation of attendance record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+    get:
+      summary: Get all attendance records
+      responses:
+        '200':
+          description: Successful retrieval of attendance records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Attendance'
+  /attendance/{id}:
+    put:
+      summary: Update an attendance record by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAttendanceDto'
+      responses:
+        '200':
+          description: Successful update of the attendance record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+    delete:
+      summary: Delete an attendance record by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful deletion of the attendance record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+  /attendance/today-status:
+    get:
+      summary: Get today's attendance status for a user
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful retrieval of today's attendance status
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Attendance'
+  /attendance/checkin:
+    post:
+      summary: Check in for attendance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckInDto'
+      responses:
+        '201':
+          description: Successful check-in for attendance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+  /attendance/checkout:
+    post:
+      summary: Check out for attendance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckOutDto'
+      responses:
+        '200':
+          description: Successful check-out for attendance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+  /attendance/{id}:
+    get:
+      summary: Get an attendance record by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful retrieval of the attendance record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+components:
+  schemas:
+    CreateAttendanceDto:
+      type: object
+      properties:
+        checkInTime:
+          type: string
+          format: date-time
+        checkOutTime:
+          type: string
+          format: date-time
+        checkInType:
+          type: string
+        locationHash:
+          type: string
+        entityId:
+          type: string
+        checkInHash:
+          type: string
+      required:
+        - checkInTime
+    UpdateAttendanceDto:
+      type: object
+      properties:
+        checkInTime:
+          type: string
+          format: date-time
+        checkOutTime:
+          type: string
+          format: date-time
+        checkInType:
+          type: string
+        locationHash:
+          type: string
+        entityId:
+          type: string
+        checkInHash:
+          type: string
+    CheckInDto:
+      allOf:
+        - $ref: '#/components/schemas/CreateAttendanceDto'
+        - type: object
+          properties:
+            userId:
+              type: string
+              format: uuid
+      required:
+        - userId
+    CheckOutDto:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+      required:
+        - userId
+    Attendance:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+        checkInTime:
+          type: string
+          format: date-time
+        checkOutTime:
+          type: string
+          format: date-time
+        checkInType:
+          type: string
+        locationHash:
+          type: string
+        entityId:
+          type: string
+        checkInHash:
+          type: string
