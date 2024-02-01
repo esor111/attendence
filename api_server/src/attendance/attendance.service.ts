@@ -2,18 +2,17 @@ import { Injectable, BadRequestException, NotFoundException } from '@nestjs/comm
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Attendance, AttendanceDocument } from './schemas/attendance.schema';
-import { CreateAttendanceDto, UpdateAttendanceDto, CheckInDto, CheckOutDto } from './attendance.controller'; // Import the DTOs
+import { CreateAttendanceDto, UpdateAttendanceDto, CheckInDto } from './attendance.controller'; // Import the DTOs
 
 @Injectable()
 export class AttendanceService {
   constructor(
     @InjectModel(Attendance.name) private attendanceModel: Model<AttendanceDocument>,
   ) {}
-
-  async create(attendanceData: CreateAttendanceDto): Promise<Attendance> {
-    const createdAttendance = new this.attendanceModel(attendanceData);
-
-    try {
+  
+  async create(attendanceData: CreateAttendanceDto, userId: number): Promise<Attendance> {
+    const createdAttendance = new this.attendanceModel({...attendanceData, userId:userId.toString()});
+    try {   
       return await createdAttendance.save();
     } catch (error) {
       throw new BadRequestException(error.message);
@@ -64,13 +63,14 @@ export class AttendanceService {
       .exec();
   }
 
-  async checkin(attendanceData: CheckInDto): Promise<Attendance> {
+  async checkin(attendanceData: CheckInDto, userId:number): Promise<Attendance> {
     // Check if today's status exists for the user
     const todayStatus = await this.attendanceModel.findOne({
-      userId: attendanceData.userId,
+      userId: userId.toString(),
       checkInTime: { $gte: this.getStartOfDay(), $lte: this.getEndOfDay() },
     });
-
+    attendanceData['userId']=userId;
+    console.log(attendanceData)
     if (todayStatus) {
       // Today's status already exists, throw an error
       throw new BadRequestException('Attendance record already exists for today');
@@ -86,10 +86,10 @@ export class AttendanceService {
     }
   }
 
-  async checkout(userId: string): Promise<Attendance> {
+  async checkout(userId: number): Promise<Attendance> {
     // Check if today's status exists for the user
     const todayStatus = await this.attendanceModel.findOne({
-      userId: userId,
+      userId: userId.toString(),
       checkInTime: { $gte: this.getStartOfDay(), $lte: this.getEndOfDay() },
     });
   

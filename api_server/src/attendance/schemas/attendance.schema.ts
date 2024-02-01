@@ -7,7 +7,7 @@ export type AttendanceDocument = Attendance & Document;
 @Schema()
 export class Attendance {
   @Prop({ required: true })
-  @IsMongoId({ message: 'Invalid user ID. Please provide a valid MongoDB ID.' })
+  // @IsMongoId({ message: 'Invalid user ID. Please provide a valid MongoDB ID.' })
   userId: string;
 
   @Prop({ type: Date })

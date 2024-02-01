@@ -1,10 +1,11 @@
 // attendance.module.ts
 
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AttendanceController } from './attendance.controller';
 import { AttendanceService } from './attendance.service';
 import { Attendance, AttendanceSchema } from './schemas/attendance.schema';
+import { AuthMiddleware } from 'src/auth.middleware';
 
 @Module({
   imports: [
@@ -13,4 +14,8 @@ import { Attendance, AttendanceSchema } from './schemas/attendance.schema';
   controllers: [AttendanceController],
   providers: [AttendanceService],
 })
-export class AttendanceModule {}
+export class AttendanceModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes('attendance');
+  }
+}

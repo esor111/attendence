@@ -8,7 +8,7 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
+    "start": "nodemon --watch 'src/**/*.ts' --exec 'node dist/main'",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -23,17 +23,18 @@
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.3.1",
     "@nestjs/core": "^9.0.0",
+    "@nestjs/mongoose": "^10.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/swagger": "^7.2.0",
     "@nestjs/typeorm": "^9.0.1",
+    "class-transformer": "^0.5.0",
+    "class-validator": "^0.13.1",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.10.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.3.12",
-    "@nestjs/mongoose": "^10.0.0",
-    "class-validator": "^0.13.1",
-    "class-transformer": "^0.5.0"
-  }
-,  
+    "typeorm": "^0.3.12"
+  },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",

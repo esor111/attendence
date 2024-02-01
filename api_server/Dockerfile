@@ -6,17 +6,18 @@ WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY package*.json ./
+
 RUN npm install 
 
 # Bundle app source
 COPY . .
 
-# Run the build command (if needed)
 RUN npm run build
-
 # Expose the port
 EXPOSE 3000
 
-# Start the application
-CMD ["npm", "run", "start:prod"]
+# Install nodemon globally
+RUN npm install -g nodemon
 
+# Start the application with nodemon
+CMD ["nodemon", "dist/main.js"]
